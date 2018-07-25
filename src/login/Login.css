@@ -54,7 +54,7 @@ and (min-width: 0) {
         box-shadow: #1057ff 0 0 5px;
     }
 
-    .input-block input:invalid {
+    .input-block input:focus:invalid  {
         box-shadow: red 0 0 5px;
     }
 
@@ -152,7 +152,20 @@ and (min-width: 1024px) {
     }
 
     .remember-block {
-        padding-bottom: 2%;
+        display: inline-block;
+        width: 50%;
+        height: 40px;
+        padding-top: 2%;
+    }
+
+    .button-block {
+        display: inline-block;
+        width: 38%;
+        float: right;
+    }
+
+    .button {
+        height: 40px;
     }
 }
 
