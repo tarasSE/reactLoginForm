@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
+import './Login.css';
 
 const errors = {
     noEmail: 'Email can\'t be empty',
@@ -25,7 +25,7 @@ function Error(params) {
     )
 }
 
-export class App extends Component {
+export class Login extends Component {
     state = {
         email: '',
         password: '',
@@ -85,9 +85,7 @@ export class App extends Component {
         if (event.key === 'Enter') {
             event.preventDefault();
             event.stopPropagation();
-            console.log(1);
             this.login();
-            console.log(2);
         }
     };
 
@@ -159,4 +157,4 @@ export class App extends Component {
 }
 
 export {isEmailValid, isPasswordValid, Error, errors}
-export default App;
+export default Login;

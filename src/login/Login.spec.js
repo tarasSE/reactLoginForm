@@ -1,16 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {expect} from 'chai';
-import {App, Error, isEmailValid, isPasswordValid, errors} from './App';
+import {Login, Error, isEmailValid, isPasswordValid, errors} from './Login';
 import {shallow, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 configure({adapter: new Adapter()});
 
-describe('App Component', () => {
+describe('Login component rendering', () => {
     let appComponent;
     beforeEach(() => {
-        appComponent = shallow(<App/>)
+        appComponent = shallow(<Login/>)
     });
 
     it('renders the app block', () => {
