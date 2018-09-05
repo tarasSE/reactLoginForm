@@ -1,15 +1,15 @@
 import React from 'react';
-import { expect } from 'chai';
-import { shallow,  mount} from 'enzyme';
+import {expect} from 'chai';
+import {shallow} from 'enzyme';
 import MockAuthService from "../shared/auth/MockAuthService";
-import { Login, Error} from './Login';
-import { errors } from "./constants";
+import {Login, Error} from './Login';
+import {errors} from "./constants";
 import '../shared/test-utils/setup';
 
 describe('Login component rendering', () => {
     let loginComponent;
     beforeEach(() => {
-        loginComponent = shallow(<Login setLoginSuccessful={success => success} authService={ new MockAuthService() }/>)
+        loginComponent = shallow(<Login setLoginSuccessful={success => success} authService={new MockAuthService()}/>)
     });
 
     it('renders the form-block', () => {
@@ -36,16 +36,18 @@ describe('Login component rendering', () => {
         expect(loginComponent.find('.button-block').render().text()).to.equal('Login');
     });
 
-    // TODO: Test can't change state object in onLoginError and onLoginSuccess methods. Figure out why it happens.
-    // it('renders the error block when credentials are wrong', () => {
-    //     loginComponent = mount(<Login setLoginSuccessful={success => success} authService={new MockAuthService()}/>);
-    //     loginComponent.setState({email: 'wrong@email.pl', password: 'WrongPassword1'});
-    //     loginComponent.find('button').at(0).simulate('click');
-    //
-    //     expect(loginComponent.state('wrongCreds')).to.equal(true);
-    //     expect(loginComponent.find(Error)).to.have.length(1);
-    //     expect(loginComponent.find(Error).render().text()).to.equal(errors.wrongCreds);
-    // });
+    it('renders the error block when credentials are wrong', () => {
+        loginComponent.setState({wrongCreds: true});
+
+        expect(loginComponent.find(Error)).to.have.length(1);
+        expect(loginComponent.find(Error).render().text()).to.equal(errors.wrongCreds);
+    });
+
+    it('renders no error when credentials are correct', () => {
+        loginComponent.setState({wrongCreds: false});
+
+        expect(loginComponent.find(Error)).to.have.length(0);
+    });
 
     it('renders no error on start', () => {
         expect(loginComponent.find(Error)).to.have.length(0);
