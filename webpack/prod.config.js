@@ -1,9 +1,10 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const extractCSS = new ExtractTextPlugin('style.css');
 const htmlPlugin = new HtmlWebpackPlugin({
-    template: './public/index.html',
+    template: './src/index.html',
     chunksSortMode: 'dependency',
     inject: 'body'
 });
@@ -19,7 +20,11 @@ module.exports = {
     },
     plugins: [
         extractCSS,
-        htmlPlugin
+        htmlPlugin,
+        new CopyWebpackPlugin([
+            { from: './src/content/favicon.ico', to: './content/favicon.ico' },
+            { from: './src/content/manifest.json', to: './content/manifest.json' },
+        ]),
     ],
     module: {
         rules: [
@@ -42,13 +47,17 @@ module.exports = {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: false,
-                                minimize: true,
-                                sourceMap: true
+                                url: true,
+                                import: true,
+                                minimize: true
                             }
                         }
                     ]
                 })
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
+                loaders: ['file-loader?hash=sha512&digest=hex&name=content/[hash].[ext]']
             }
         ]
     }
