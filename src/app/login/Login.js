@@ -44,14 +44,14 @@ export default class Login extends Component {
         this.setState({
             wrongCreds: false
         });
-        this.setLoginSuccessful(true);
+        this.setLoginSuccessful(response.loginSuccessful);
     };
 
     onLoginError = error => {
         this.setState({
             wrongCreds: true
         });
-        this.setLoginSuccessful(false);
+        this.setLoginSuccessful(error.loginSuccessful);
     };
 
     emailChange = event => {
@@ -110,7 +110,10 @@ export default class Login extends Component {
                     <fieldset>
                         <div className="input-block">
                             <label htmlFor="email">Email</label>
-                            <input type="text" name="email" id="email" placeholder="Email"
+                            <input type="text"
+                                   name="email"
+                                   id="email"
+                                   placeholder="Email"
                                    onChange={this.emailChange} onBlur={this.showEmailErrors}
                                    onKeyPress={this.submitByEnter}
                                    required/>
@@ -119,8 +122,12 @@ export default class Login extends Component {
                         {canShowEmailErrors && email && !emailValid && <Error text={errors.invalidEmail}/>}
                         <div className="input-block">
                             <label htmlFor="password">Password</label>
-                            <input type="password" name="password" id="password" placeholder="Password"
-                                   onChange={this.passwordChange} onBlur={this.showPasswordErrors}
+                            <input type="password"
+                                   name="password"
+                                   id="password"
+                                   placeholder="Password"
+                                   onChange={this.passwordChange}
+                                   onBlur={this.showPasswordErrors}
                                    onKeyPress={this.submitByEnter}
                                    required/>
                         </div>
@@ -130,11 +137,18 @@ export default class Login extends Component {
                         {wrongCreds && <Error text={errors.wrongCreds}/>}
                         <div className="remember-block">
                             <label htmlFor="remember">
-                                <input type="checkbox" name="remember" id="remember"/> Remember me
+                                <input type="checkbox"
+                                       name="remember"
+                                       id="remember"/>
+                                Remember me
                             </label>
                         </div>
                         <div className="button-block">
-                            <button className="button" type="button" onClick={this.login}>Login</button>
+                            <button className="button"
+                                    type="button"
+                                    onClick={this.login}>
+                                Login
+                            </button>
                         </div>
                     </fieldset>
                 </form>

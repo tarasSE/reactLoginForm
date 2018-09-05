@@ -18,8 +18,13 @@ export class Application extends Component {
         const {loginSuccessful} = this.state;
         return (
             <div className="app">
-                {!loginSuccessful && <Login setLoginSuccessful={ this.setLoginSuccessful } authService={ new MockAuthService() }/>}
-                {loginSuccessful && <div className="success"><h1>Login successful!</h1></div>}
+                {!loginSuccessful && <Login
+                    setLoginSuccessful={ this.setLoginSuccessful }
+                    authService={ new MockAuthService() }/>
+                }
+                {loginSuccessful && <div className="success">
+                    <h1>Login successful!</h1>
+                </div>}
             </div>
         );
     }

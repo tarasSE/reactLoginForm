@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { Application } from './Application';
-import { shallow, configure } from 'enzyme';
+import { shallow } from 'enzyme';
 import '../shared/test-utils/setup';
 
 describe('Application component rendering', () => {
