@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Application.css';
-import Login from '../login/Login.js';
+import Login from '../login/Login.jsx';
 import { MockAuthService } from '../shared/auth/MockAuthService';
 
 export class Application extends Component {

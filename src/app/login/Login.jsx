@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Login.css';
 import { errors, isEmailValid, isPasswordValid } from './constants';
 
