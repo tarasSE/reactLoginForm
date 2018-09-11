@@ -1,27 +1,28 @@
-const findFile = require('../findFile');
+const findFile = require('./findFile');
 const fs = require('fs');
 const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const {JSDOM} = jsdom;
 const pluginName = 'StylesInjectPlugin';
 
 class StylesInjectPlugin {
     apply(compiler) {
         compiler.hooks.afterEmit.tap(pluginName, compilation => {
-            const file = findFile({}, {}, compilation);
-            fs.readFile('./build/' + file, 'utf8', (err, css) => {
-                if (err) {
-                    console.error(err);
-                }
-
-                addStyleTag(css);
-
-                fs.unlink('./build/' + file, (err) => {
+            console.log(JSON.stringify(compilation.hooks, null, 2));
+                const file = findFile({}, {}, compilation);
+                fs.readFile('./build/' + file, 'utf8', (err, css) => {
                     if (err) {
                         console.error(err);
                     }
+
+                    addStyleTag(css);
+
+                    fs.unlink('./build/' + file, (err) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
                 });
             });
-        });
     }
 }
 

@@ -27,18 +27,19 @@ module.exports = {
     },
     plugins: [
         new ServiceWorkerWebpackPlugin({
+            excludes: ['**/*.css'],
             entry: path.join(__dirname, '../src/service-worker.js'),
         }),
-        htmlPlugin,
         extractCSS,
-        new CopyWebpackPlugin([
-            {from: './src/content/favicon.ico', to: './content/favicon.ico'},
-            {from: './src/content/manifest.json', to: './content/manifest.json'},
-        ]),
         new PurifyCSSPlugin({
             purifyOptions: {minify: true},
             paths: glob.sync(path.join(__dirname, '../src/**/*.css')),
         }),
+        new CopyWebpackPlugin([
+            {from: './src/content/favicon.ico', to: './content/favicon.ico'},
+            {from: './src/content/manifest.json', to: './content/manifest.json'},
+        ]),
+        htmlPlugin,
         new StylesInjectPlugin(),
         new PerformancePlugin()
     ],
