@@ -1,5 +1,6 @@
 const path = require('path');
 const glob = require('glob');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -21,13 +22,15 @@ module.exports = {
         extensions: ['.jsx', '.js']
     },
     plugins: [
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, '../src/service-worker.js'),
+        }),
         extractCSS,
         htmlPlugin,
         new CopyWebpackPlugin([
             {from: './src/content/favicon.ico', to: './content/favicon.ico'},
             {from: './src/content/manifest.json', to: './content/manifest.json'},
             {from: './src/registerServiceWorker.js', to: './registerServiceWorker.js'},
-            {from: './src/service-worker.js', to: './service-worker.js'},
         ]),
         new PurifyCSSPlugin({
             purifyOptions: {minify: true},
