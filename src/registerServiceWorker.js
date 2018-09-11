@@ -73,6 +73,12 @@ function registerValidSW(swUrl) {
               console.log('Content is cached for offline use.');
             }
           }
+
+          if(installingWorker.state === 'waiting'){
+              if (window.confirm("There is a problem with the Internet connection. Would you like to view this page on offline mode?")) {
+                  installingWorker.postMessage('skipWaiting');
+              }
+          }
         };
       };
     })
