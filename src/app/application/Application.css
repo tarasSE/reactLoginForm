@@ -17,7 +17,7 @@ and (min-width: 0) {
         height: 100%;
         opacity: 0.4;
         z-index: -1;
-        background: url("../../content/bg5.svg") top right no-repeat, url("../../content/bg6.svg") bottom left no-repeat;
+        background: url("../../content/background/bg5.svg") top right no-repeat, url("../../content/background/bg6.svg") bottom left no-repeat;
         background-size: 80%, 80%;
     }
 }

@@ -1,8 +1,10 @@
 const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const glob = require('glob');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const extractCSS = new ExtractTextPlugin('style.css');
+const PurifyCSSPlugin = require('purifycss-webpack');
+const extractCSS = new ExtractTextPlugin('style-[hash].css');
 const htmlPlugin = new HtmlWebpackPlugin({
     template: './src/index.html',
     chunksSortMode: 'dependency',
@@ -13,7 +15,7 @@ module.exports = {
     entry: './src/index',
     output: {
         path: path.resolve(__dirname, '../build'),
-        filename: 'bundle.js'
+        filename: 'bundle-[hash].js'
     },
     resolve: {
         extensions: ['.jsx', '.js']
@@ -22,12 +24,29 @@ module.exports = {
         extractCSS,
         htmlPlugin,
         new CopyWebpackPlugin([
-            { from: './src/content/favicon.ico', to: './content/favicon.ico' },
-            { from: './src/content/manifest.json', to: './content/manifest.json' },
+            {from: './src/content/favicon.ico', to: './content/favicon.ico'},
+            {from: './src/content/manifest.json', to: './content/manifest.json'},
+            {from: './src/registerServiceWorker.js', to: './registerServiceWorker.js'},
+            {from: './src/service-worker.js', to: './service-worker.js'},
         ]),
+        new PurifyCSSPlugin({
+            purifyOptions: {minify: true},
+            paths: glob.sync(path.join(__dirname, '../src/**/*.css')),
+        })
     ],
     module: {
         rules: [
+            {
+                test: /\.html$/,
+                use: [{
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true,
+                        removeComments: true,
+                        collapseWhitespace: true
+                    }
+                }],
+            },
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
@@ -48,8 +67,7 @@ module.exports = {
                             loader: 'css-loader',
                             options: {
                                 url: true,
-                                import: true,
-                                minimize: true
+                                import: true
                             }
                         }
                     ]
