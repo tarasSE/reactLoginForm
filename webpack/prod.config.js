@@ -30,7 +30,6 @@ module.exports = {
         new CopyWebpackPlugin([
             {from: './src/content/favicon.ico', to: './content/favicon.ico'},
             {from: './src/content/manifest.json', to: './content/manifest.json'},
-            {from: './src/registerServiceWorker.js', to: './registerServiceWorker.js'},
         ]),
         new PurifyCSSPlugin({
             purifyOptions: {minify: true},
