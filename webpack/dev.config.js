@@ -8,7 +8,7 @@ const path = require('path');
 
 const extractCSS = new ExtractTextPlugin('style.css');
 const htmlPlugin = new HtmlWebpackPlugin({
-    template: './public/index.html',
+    template: './src/index.html',
     chunksSortMode: 'dependency',
     inject: 'body'
 });
@@ -27,35 +27,6 @@ module.exports = {
         filename: 'bundle.js',
         chunkFilename: 'chunk.js'
     },
-    module: {
-        rules: [
-            {
-                test: /\.jsx?$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                options: {
-                    presets: [
-                        ['@babel/preset-env', {useBuiltIns: 'entry'}],
-                        '@babel/preset-react'
-                    ],
-                }
-            },
-            {
-                test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
-            }
-        ]
-    },
-    devServer: {
-        stats: {
-            children: false
-        },
-        hot: true,
-        contentBase: '../dev-build',
-        watchOptions: {
-            ignored: /node_modules/
-        }
-    },
     plugins: [
         new BrowserSyncPlugin({
             host: 'localhost',
@@ -73,5 +44,38 @@ module.exports = {
         new WebpackNotifierPlugin({
             title: 'Login form'
         })
-    ]
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                options: {
+                    presets: [
+                        ['@babel/preset-env', {useBuiltIns: 'entry'}],
+                        '@babel/preset-react'
+                    ],
+                }
+            },
+            {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
+                loaders: ['file-loader?hash=sha512&digest=hex&name=content/[hash].[ext]']
+            }
+        ]
+    },
+    devServer: {
+        stats: {
+            children: false
+        },
+        hot: true,
+        contentBase: '../dev-build',
+        watchOptions: {
+            ignored: /node_modules/
+        }
+    }
 };

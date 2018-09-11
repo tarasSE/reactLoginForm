@@ -1,28 +1,60 @@
+const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const glob = require('glob');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const extractCSS = new ExtractTextPlugin('style.css');
+const PurifyCSSPlugin = require('purifycss-webpack');
+const cssFileName = 'style-[hash].css';
+const extractCSS = new ExtractTextPlugin(cssFileName);
+const StylesInjectPlugin = require('./plugins/StylesInjectPlugin');
+const PerformancePlugin = require('./plugins/PerformancePlugin');
 const htmlPlugin = new HtmlWebpackPlugin({
-    template: './public/index.html',
-    chunksSortMode: 'dependency',
-    inject: 'body'
+    template: './src/index.html',
+    inject: true
 });
 
 module.exports = {
+    mode: 'production',
     entry: './src/index',
     output: {
         path: path.resolve(__dirname, '../build'),
-        filename: 'bundle.js'
+        filename: 'bundle-[hash].js'
     },
     resolve: {
         extensions: ['.jsx', '.js']
     },
     plugins: [
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, '../src/service-worker.js'),
+        }),
+        htmlPlugin,
         extractCSS,
-        htmlPlugin
+        new CopyWebpackPlugin([
+            {from: './src/content/favicon.ico', to: './content/favicon.ico'},
+            {from: './src/content/manifest.json', to: './content/manifest.json'},
+        ]),
+        new PurifyCSSPlugin({
+            purifyOptions: {minify: true},
+            paths: glob.sync(path.join(__dirname, '../src/**/*.css')),
+        }),
+        new StylesInjectPlugin(),
+        new PerformancePlugin()
     ],
     module: {
         rules: [
+            {
+                test: /\.html$/,
+                use: [{
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true,
+                        removeComments: true,
+                        collapseWhitespace: true
+                    }
+                }],
+            },
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
@@ -42,13 +74,16 @@ module.exports = {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: false,
-                                minimize: true,
-                                sourceMap: true
+                                url: true,
+                                import: true
                             }
                         }
                     ]
                 })
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
+                loaders: ['file-loader?hash=sha512&digest=hex&name=content/[hash].[ext]']
             }
         ]
     }

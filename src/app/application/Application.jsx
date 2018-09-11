@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Application.css';
+import './fonts.css';
 import Login from '../login/Login.jsx';
 import { MockAuthService } from '../shared/auth/MockAuthService';
 
