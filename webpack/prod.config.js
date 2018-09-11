@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const glob = require('glob');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
@@ -5,14 +6,17 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const PurifyCSSPlugin = require('purifycss-webpack');
-const extractCSS = new ExtractTextPlugin('style-[hash].css');
+const cssFileName = 'style-[hash].css';
+const extractCSS = new ExtractTextPlugin(cssFileName);
+const StylesInjectPlugin = require('./plugins/StylesInjectPlugin');
+const PerformancePlugin = require('./plugins/PerformancePlugin');
 const htmlPlugin = new HtmlWebpackPlugin({
     template: './src/index.html',
-    chunksSortMode: 'dependency',
-    inject: 'body'
+    inject: true
 });
 
 module.exports = {
+    mode: 'production',
     entry: './src/index',
     output: {
         path: path.resolve(__dirname, '../build'),
@@ -25,8 +29,8 @@ module.exports = {
         new ServiceWorkerWebpackPlugin({
             entry: path.join(__dirname, '../src/service-worker.js'),
         }),
-        extractCSS,
         htmlPlugin,
+        extractCSS,
         new CopyWebpackPlugin([
             {from: './src/content/favicon.ico', to: './content/favicon.ico'},
             {from: './src/content/manifest.json', to: './content/manifest.json'},
@@ -34,7 +38,9 @@ module.exports = {
         new PurifyCSSPlugin({
             purifyOptions: {minify: true},
             paths: glob.sync(path.join(__dirname, '../src/**/*.css')),
-        })
+        }),
+        new StylesInjectPlugin(),
+        new PerformancePlugin()
     ],
     module: {
         rules: [
