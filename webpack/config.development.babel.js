@@ -1,16 +1,16 @@
-const webpack = require('webpack');
-const writeFilePlugin = require('write-file-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const WebpackNotifierPlugin = require('webpack-notifier');
-const path = require('path');
+import webpack from "webpack";
+import ServiceWorkerWebpackPlugin from "serviceworker-webpack-plugin";
+import writeFilePlugin from "write-file-webpack-plugin";
+import ExtractTextPlugin from "extract-text-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import BrowserSyncPlugin from "browser-sync-webpack-plugin";
+import WebpackNotifierPlugin from "webpack-notifier";
+import path from "path";
 
 const extractCSS = new ExtractTextPlugin('style.css');
 const htmlPlugin = new HtmlWebpackPlugin({
     template: './src/index.html',
-    chunksSortMode: 'dependency',
-    inject: 'body'
+    inject: true
 });
 
 module.exports = {
@@ -28,6 +28,10 @@ module.exports = {
         chunkFilename: 'chunk.js'
     },
     plugins: [
+        new ServiceWorkerWebpackPlugin({
+            excludes: ['**/*.css'],
+            entry: path.join(__dirname, '../src/service-worker.js'),
+        }),
         new BrowserSyncPlugin({
             host: 'localhost',
             port: 9000,

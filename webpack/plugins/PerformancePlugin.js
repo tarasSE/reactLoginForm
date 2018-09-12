@@ -1,15 +1,15 @@
-const fs = require('fs');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+import fs from "fs";
+import jsdom from "jsdom";
+
+const {JSDOM} = jsdom;
 const pluginName = 'PerformancePlugin';
 
 class PerformancePlugin {
     apply(compiler) {
         compiler.hooks.afterEmit.tap(pluginName, compilation => {
-            console.log(compilation.assets);
             fs.readFile('./build/index.html', 'utf8', (err, html) => {
                 if (err) {
-                    console.error(`Can't open '../build/index.html'`);
+                    console.error(`Can't open './build/index.html'`);
                     console.error(err);
                 }
                 const dom = new JSDOM(html);

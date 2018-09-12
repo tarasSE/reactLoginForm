@@ -1,13 +1,13 @@
-const findFile = require('./findFile');
-const fs = require('fs');
-const jsdom = require("jsdom");
-const {JSDOM} = jsdom;
+import findFile from "./findFile";
+import fs from "fs";
+import jsdom from "jsdom";
+
+const { JSDOM } = jsdom;
 const pluginName = 'StylesInjectPlugin';
 
 class StylesInjectPlugin {
     apply(compiler) {
         compiler.hooks.afterEmit.tap(pluginName, compilation => {
-            console.log(JSON.stringify(compilation.hooks, null, 2));
                 const file = findFile({}, {}, compilation);
                 fs.readFile('./build/' + file, 'utf8', (err, css) => {
                     if (err) {

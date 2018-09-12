@@ -1,15 +1,16 @@
-const webpack = require('webpack');
-const path = require('path');
-const glob = require('glob');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PurifyCSSPlugin = require('purifycss-webpack');
+import webpack from "webpack";
+import path from "path";
+import glob from "glob";
+import ServiceWorkerWebpackPlugin from "serviceworker-webpack-plugin";
+import ExtractTextPlugin from "extract-text-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import PurifyCSSPlugin from "purifycss-webpack";
+import StylesInjectPlugin from "./plugins/StylesInjectPlugin";
+import PerformancePlugin from "./plugins/PerformancePlugin";
+
 const cssFileName = 'style-[hash].css';
 const extractCSS = new ExtractTextPlugin(cssFileName);
-const StylesInjectPlugin = require('./plugins/StylesInjectPlugin');
-const PerformancePlugin = require('./plugins/PerformancePlugin');
 const htmlPlugin = new HtmlWebpackPlugin({
     template: './src/index.html',
     inject: true
@@ -41,7 +42,7 @@ module.exports = {
         ]),
         htmlPlugin,
         new StylesInjectPlugin(),
-        new PerformancePlugin()
+        new PerformancePlugin(),
     ],
     module: {
         rules: [
