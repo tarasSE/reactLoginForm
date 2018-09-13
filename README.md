@@ -1,4 +1,10 @@
-React login form(https://login-form.netlify.com)
+# Solution
+
+React login form main - https://login-form.netlify.com
+
+React login form with experimental performance improvements - https://login-form-experimental-performance.netlify.com/ 
+[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Flogin-form-experimental-performance.netlify.com%2F&tab=mobile)
+
 
 # Zadanie
 W ramach zadania kandydat powinien stworzyć stronę html z zaimplementowaną obsługą formularza po stronie front-end'u.
