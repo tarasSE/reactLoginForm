@@ -2,10 +2,11 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import MockAuthService from "../shared/auth/MockAuthService";
-import {Login, Error} from './Login';
+import {Login} from './Login';
 import {errors} from "./constants";
 import '../shared/test-utils/setup';
 
+const mockEvent = {target: {}};
 describe('Login component rendering', () => {
     let loginComponent;
     beforeEach(() => {
@@ -39,57 +40,55 @@ describe('Login component rendering', () => {
     it('renders the error block when credentials are wrong', () => {
         loginComponent.setState({wrongCreds: true});
 
-        expect(loginComponent.find(Error)).to.have.length(1);
-        expect(loginComponent.find(Error).render().text()).to.equal(errors.wrongCreds);
+        expect(loginComponent.find('#wrong-creds-error')).to.have.length(1);
+        expect(loginComponent.find('#wrong-creds-error').render().text()).to.equal(errors.wrongCreds);
     });
 
     it('renders no error when credentials are correct', () => {
         loginComponent.setState({wrongCreds: false});
 
-        expect(loginComponent.find(Error)).to.have.length(0);
+        expect(loginComponent.find('.error-block')).to.have.length(0);
     });
 
     it('renders no error on start', () => {
-        expect(loginComponent.find(Error)).to.have.length(0);
+        expect(loginComponent.find('.error-block')).to.have.length(0);
     });
 
     it('renders the error block when email input touched and empty', () => {
-        const email = loginComponent.find('input').at(0);
-        email.simulate('focus');
-        email.simulate('blur');
+        const email = loginComponent.find('#email');
+        email.simulate('focus', mockEvent);
+        email.simulate('blur', mockEvent);
 
-        expect(loginComponent.find(Error)).to.have.length(1);
-        expect(loginComponent.find(Error).render().text()).to.equal(errors.noEmail);
+        expect(loginComponent.find('#no-email-error')).to.have.length(1);
+        expect(loginComponent.find('#no-email-error').render().text()).to.equal(errors.noEmail);
     });
 
     it('renders the error block when password input touched and empty', () => {
-        const password = loginComponent.find('input').at(1);
-        password.simulate('focus');
-        password.simulate('blur');
+        const password = loginComponent.find('#password');
+        password.simulate('focus', mockEvent);
+        password.simulate('blur', mockEvent);
 
-        expect(loginComponent.find(Error)).to.have.length(1);
-        expect(loginComponent.find(Error).render().text()).to.equal(errors.noPassword);
+        expect(loginComponent.find('#no-password-error')).to.have.length(1);
+        expect(loginComponent.find('#no-password-error').render().text()).to.equal(errors.noPassword);
     });
 
 
     it('renders the error block when email input touched and value is invalid', () => {
-        const email = loginComponent.find('input').at(0);
-        email.simulate('focus');
-        email.prop('onChange')({target: {value: 'invalid_email.pl'}});
-        email.simulate('blur');
+        const email = loginComponent.find('#email');
+        email.simulate('focus', mockEvent);
+        email.simulate('blur', {target: {value: 'invalid_email.pl'}});
 
-        expect(loginComponent.find(Error)).to.have.length(1);
-        expect(loginComponent.find(Error).render().text()).to.equal(errors.invalidEmail);
+        expect(loginComponent.find('#invalid-email-error')).to.have.length(1);
+        expect(loginComponent.find('#invalid-email-error').render().text()).to.equal(errors.invalidEmail);
     });
 
     it('renders the error block when password input touched and value is invalid', () => {
         const password = loginComponent.find('input').at(1);
-        password.simulate('focus');
-        password.prop('onChange')({target: {value: 'invalid_password'}});
-        password.simulate('blur');
+        password.simulate('focus', mockEvent);
+        password.simulate('blur', {target: {value: 'invalid_password'}});
 
-        expect(loginComponent.find(Error)).to.have.length(1);
-        expect(loginComponent.find(Error).render().text()).to.equal(errors.invalidPassword);
+        expect(loginComponent.find('#invalid-password-error')).to.have.length(1);
+        expect(loginComponent.find('#invalid-password-error').render().text()).to.equal(errors.invalidPassword);
     });
 
     it('renders the input-block', () => {
