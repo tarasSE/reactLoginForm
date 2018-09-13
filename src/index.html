@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
+    <link rel="prefetch" href="content/background/bg5.svg">
+    <link rel="prefetch" href="content/background/bg6.svg">
     <link rel="manifest" href="content/manifest.json">
     <link rel="shortcut icon" href="content/favicon.ico">
     <title>React Login</title>
@@ -17,12 +19,32 @@
         <div class="form-block">
             <form>
                 <fieldset>
-                    <div class="input-block"><label for="email">Email</label> <input id="email"></div>
-                    <div class="input-block"><label for="password">Password</label> <input id="password"></div>
-                    <div class="remember-block"><label for="remember"> <input type="checkbox" name="remember"
-                                                                              id="remember"> Remember me </label></div>
+                    <div class="input-block">
+                        <label for="email">Email</label>
+                        <input type="text"
+                               name="email"
+                               id="email"
+                               placeholder="Email"
+                               required="">
+                    </div>
+                    <div class="error-block">
+                        <div class="error">Email can't be empty</div>
+                    </div>
+                    <div class="input-block"><label for="password">Password</label><input type="password"
+                                                                                          name="password"
+                                                                                          id="password"
+                                                                                          placeholder="Password"
+                                                                                          required=""></div>
+                    <div class="error-block">
+                        <div class="error">Password can't be empty</div>
+                    </div>
+                    <div class="remember-block">
+                        <label for="remember">
+                            <input type="checkbox"
+                                   name="remember"
+                                   id="remember">Remember me</label></div>
                     <div class="button-block">
-                        <button class="button" type="button"> Login</button>
+                        <button class="button" type="button">Login</button>
                     </div>
                 </fieldset>
             </form>
