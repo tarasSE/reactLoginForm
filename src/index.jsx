@@ -5,7 +5,7 @@ import Application from "./app/application/Application";
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 
-// ReactDOM.render(<Application />, document.getElementById('root'));
+ReactDOM.render(<Application />, document.getElementById('root'));
 if ('serviceWorker' in navigator) {
     const registration = runtime.register();
 }

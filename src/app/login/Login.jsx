@@ -114,7 +114,8 @@ export default class Login extends Component {
                                    name="email"
                                    id="email"
                                    placeholder="Email"
-                                   onChange={this.emailChange} onBlur={this.showEmailErrors}
+                                   onChange={this.emailChange}
+                                   onBlur={this.showEmailErrors}
                                    onKeyPress={this.submitByEnter}
                                    required/>
                         </div>
