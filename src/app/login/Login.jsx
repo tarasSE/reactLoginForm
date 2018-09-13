@@ -1,14 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './Login.css';
-import { errors, isEmailValid, isPasswordValid } from './constants';
-
-function Error(params) {
-    return (
-        <div className="error-block">
-            <div className="error">{params.text}</div>
-        </div>
-    )
-}
+import {errors, isEmailValid, isPasswordValid} from './constants';
+import {Error} from '../error/Error';
 
 export default class Login extends Component {
     state = {
@@ -22,11 +15,10 @@ export default class Login extends Component {
         wrongCreds: false,
     };
 
-    constructor(params) {
-        super(params);
-        this.setLoginSuccessful = params.setLoginSuccessful;
-        this.authService = params.authService;
-    }
+    props = {
+        setLoginSuccessful: null,
+        authService: {}
+    };
 
     login = () => {
         if (!isPasswordValid(this.state.password)) {
@@ -35,7 +27,7 @@ export default class Login extends Component {
             });
             return;
         }
-        this.authService.login(this.state.email, this.state.password)
+        this.props.authService.login(this.state.email, this.state.password)
             .then(this.onLoginSuccess)
             .catch(this.onLoginError);
     };
@@ -44,14 +36,14 @@ export default class Login extends Component {
         this.setState({
             wrongCreds: false
         });
-        this.setLoginSuccessful(response.loginSuccessful);
+        this.props.setLoginSuccessful(response.loginSuccessful);
     };
 
     onLoginError = error => {
         this.setState({
             wrongCreds: true
         });
-        this.setLoginSuccessful(error.loginSuccessful);
+        this.props.setLoginSuccessful(error.loginSuccessful);
     };
 
     emailChange = event => {
@@ -80,13 +72,15 @@ export default class Login extends Component {
         }
     };
 
-    showEmailErrors = () => {
+    showEmailErrors = event => {
+        this.emailChange(event);
         this.setState(
             {canShowEmailErrors: true}
         );
     };
 
-    showPasswordErrors = () => {
+    showPasswordErrors = event => {
+        this.passwordChange(event);
         this.setState(
             {canShowPasswordErrors: true}
         )
@@ -110,32 +104,41 @@ export default class Login extends Component {
                     <fieldset>
                         <div className="input-block">
                             <label htmlFor="email">Email</label>
-                            <input type="text"
-                                   name="email"
-                                   id="email"
-                                   placeholder="Email"
-                                   onChange={this.emailChange}
-                                   onBlur={this.showEmailErrors}
-                                   onKeyPress={this.submitByEnter}
-                                   required/>
+                            <input
+                                type="text"
+                                name="email"
+                                id="email"
+                                placeholder="Email"
+                                onBlur={this.showEmailErrors}
+                                onKeyPress={this.submitByEnter}
+                                required/>
                         </div>
-                        {canShowEmailErrors && !email && <Error text={errors.noEmail}/>}
-                        {canShowEmailErrors && email && !emailValid && <Error text={errors.invalidEmail}/>}
+                        <Error
+                            id="no-email-error"
+                            text={errors.noEmail}
+                            show={canShowEmailErrors && !email}/>
+                        <Error id="invalid-email-error"
+                               text={errors.invalidEmail}
+                               show={canShowEmailErrors && email && !emailValid}/>
                         <div className="input-block">
                             <label htmlFor="password">Password</label>
                             <input type="password"
                                    name="password"
                                    id="password"
                                    placeholder="Password"
-                                   onChange={this.passwordChange}
                                    onBlur={this.showPasswordErrors}
                                    onKeyPress={this.submitByEnter}
                                    required/>
                         </div>
-                        {canShowPasswordErrors && !password && <Error text={errors.noPassword}/>}
-                        {canShowPasswordErrors && password && !passwordValid &&
-                        <Error text={errors.invalidPassword}/>}
-                        {wrongCreds && <Error text={errors.wrongCreds}/>}
+                        <Error id="no-password-error"
+                               text={errors.noPassword}
+                               show={canShowPasswordErrors && !password}/>
+                        <Error id="invalid-password-error"
+                               text={errors.invalidPassword}
+                               show={canShowPasswordErrors && password && !passwordValid}/>
+                        <Error id="wrong-creds-error"
+                               text={errors.wrongCreds}
+                               show={wrongCreds}/>
                         <div className="remember-block">
                             <label htmlFor="remember">
                                 <input type="checkbox"
@@ -158,4 +161,4 @@ export default class Login extends Component {
     }
 }
 
-export { Login, Error };
+export {Login, Error};

@@ -54,16 +54,6 @@ and (min-width: 0) {
         box-shadow: red 0 0 5px;
     }
 
-    .error-block {
-        color: #bc2b1a;
-        font-size: 0.7em;
-        padding-bottom: 1%;
-    }
-
-    .error-block .error {
-        width: 100%;
-    }
-
     .success {
         display: block;
         position: relative;

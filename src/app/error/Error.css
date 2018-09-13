@@ -1,0 +1,9 @@
+.error-block {
+    color: #bc2b1a;
+    font-size: 0.7em;
+    padding-bottom: 1%;
+}
+
+.error-block .error {
+    width: 100%;
+}
